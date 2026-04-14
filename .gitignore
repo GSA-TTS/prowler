@@ -134,10 +134,15 @@ ai-config.json
 *.tfstate
 *.tfstate.*
 
-# .env
+# .env files (sensitive credentials)
+.env
+.env.*
 ui/.env*
 api/.env*
 mcp_server/.env*
+
+# Cloud.gov deployment variables (contains sensitive data)
+cloudgov-vars.yml
 
 # Coverage
 .coverage*
@@ -166,3 +171,4 @@ GEMINI.md
 
 # Claude Code
 .claude/*
+api/vendor
