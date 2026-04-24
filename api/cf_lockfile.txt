@@ -236,7 +236,7 @@ pagerduty==6.2.1
 pandas==2.2.3
 pbr==7.0.3
 pillow==12.2.0
-pip==25.0.1
+pip==26.0.1
 pkginfo==1.12.1.2
 platformdirs==4.9.4
 plotly==6.6.0
