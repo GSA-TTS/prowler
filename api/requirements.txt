@@ -204,7 +204,7 @@ matplotlib==3.10.8
 mdurl==0.1.2
 microsoft-kiota-abstractions==1.9.2
 microsoft-kiota-authentication-azure==1.9.2
-microsoft-kiota-http==1.9.2
+microsoft-kiota-http==1.9.9
 microsoft-kiota-serialization-form==1.9.2
 microsoft-kiota-serialization-json==1.9.2
 microsoft-kiota-serialization-multipart==1.9.2
