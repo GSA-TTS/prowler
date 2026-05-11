@@ -304,7 +304,7 @@ typing-inspection==0.4.2
 tzdata==2026.1
 tzlocal==5.3.1
 uritemplate==4.2.0
-urllib3==2.6.3
+urllib3==2.7.0
 uuid6==2024.7.10
 vine==5.1.0
 wcwidth==0.6.0
