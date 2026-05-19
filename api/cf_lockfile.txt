@@ -175,7 +175,7 @@ httpx==0.28.1
 humanfriendly==10.0
 hyperframe==6.1.0
 iamdata==0.1.202604071
-idna==3.11
+idna==3.15
 importlib-metadata==8.7.1
 inflection==0.5.1
 iso8601==2.1.0
