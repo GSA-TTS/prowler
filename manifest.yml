@@ -3,8 +3,8 @@
 x-prowler-api-env: &prowler-api-env
   DISABLE_COLLECTSTATIC: 1
   DJANGO_SETTINGS_MODULE: config.django.production
-  DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,((api_route)),prowler-api-web.apps.internal
-  DJANGO_CORS_ALLOWED_ORIGINS: http://localhost,http://127.0.0.1,https://((api_route)),https://((ui_route)),http://prowler-api-web.apps.internal:8080
+  DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,((api_route)),prowler-api-gsa-tts-iae-lava-beds-dev.apps.internal
+  DJANGO_CORS_ALLOWED_ORIGINS: http://localhost,http://127.0.0.1,https://((api_route)),https://((ui_route)),http://prowler-api-gsa-tts-iae-lava-beds-dev.apps.internal:8080
   DJANGO_LOGGING_FORMATTER: human_readable
   DJANGO_LOGGING_LEVEL: INFO
   CLOUDGOV_UAA_ENABLED: true
@@ -46,7 +46,7 @@ applications:
     command: ./bin/cloudgov-web.sh
     routes:
       - route: ((api_route))
-      - route: prowler-api-web.apps.internal
+      - route: prowler-api-gsa-tts-iae-lava-beds-dev.apps.internal
     services:
       - prowler-api-db
       - prowler-api-redis
@@ -105,7 +105,7 @@ applications:
       NPM_CONFIG_IGNORE_SCRIPTS: "true"
       NEXT_PUBLIC_API_BASE_URL: https://((api_route))/api/v1
       NEXT_PUBLIC_API_DOCS_URL: https://((api_route))/api/v1/docs
-      API_BASE_URL: http://prowler-api-web.apps.internal:8080/api/v1
+      API_BASE_URL: http://prowler-api-gsa-tts-iae-lava-beds-dev.apps.internal:8080/api/v1
       AUTH_URL: https://((ui_route))
       AUTH_SECRET: ((ui_auth_secret))
       NEXT_PUBLIC_CLOUDGOV_SSO_URL: https://((api_route))/auth/login
