@@ -13,7 +13,7 @@ export NEO4J_USER="${NEO4J_USER:-}"
 export NEO4J_PASSWORD="${NEO4J_PASSWORD:-}"
 
 if [[ -z "${DATABASE_URL:-}" && -n "${VCAP_SERVICES:-}" ]]; then
-	export DATABASE_URL="$(python - <<'PY'
+	DATABASE_URL="$(python - <<'PY'
 import json
 import os
 
@@ -22,10 +22,11 @@ credentials = (services.get("aws-rds") or [{}])[0].get("credentials") or {}
 print(credentials.get("uri", ""), end="")
 PY
 )"
+	export DATABASE_URL
 fi
 
 if [[ "${RUN_DB_MIGRATIONS:-0}" == "1" ]]; then
 	python manage.py migrate
 fi
 
-gunicorn -c config/guniconf.py config.wsgi:application
+gunicorn -c config/guniconf.py config.asgi:application

@@ -55,6 +55,13 @@ class TestCloudgovBuildpackRequirements:
         assert 'if [[ "${RUN_DB_MIGRATIONS:-0}" == "1" ]]; then' in script
         assert "python manage.py migrate" in script
 
+    def test_web_script_serves_asgi_application_with_uvicorn_worker(self):
+        script_path = Path(__file__).resolve().parents[4] / "bin" / "cloudgov-web.sh"
+        script = script_path.read_text()
+
+        assert "config.asgi:application" in script
+        assert "config.wsgi:application" not in script
+
     def test_manifest_disables_web_boot_migrations(self):
         manifest_path = Path(__file__).resolve().parents[5] / "manifest.yml"
         manifest = manifest_path.read_text()
@@ -62,12 +69,16 @@ class TestCloudgovBuildpackRequirements:
         assert "RUN_DB_MIGRATIONS: 0" in manifest
 
     def test_web_runtime_skips_optional_attack_paths_without_neo4j(self):
-        config_path = (
-            Path(__file__).resolve().parents[3] / "config" / "guniconf.py"
-        )
+        config_path = Path(__file__).resolve().parents[3] / "config" / "guniconf.py"
         config = config_path.read_text()
 
         assert "def _attack_paths_is_configured()" in config
         assert 'env.str("NEO4J_HOST", default="")' in config
         assert 'env.str("NEO4J_PORT", default="")' in config
         assert "if _attack_paths_is_configured():" in config
+
+    def test_web_runtime_does_not_warm_all_compliance_catalogs_by_default(self):
+        config_path = Path(__file__).resolve().parents[3] / "config" / "guniconf.py"
+        config = config_path.read_text()
+
+        assert 'env.bool("WARM_COMPLIANCE_CACHES", default=False)' in config

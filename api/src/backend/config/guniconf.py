@@ -90,9 +90,7 @@ def _attack_paths_is_configured() -> bool:
     Cartography's temporary scan databases, so avoid initializing either
     driver unless the required host and port are present.
     """
-    return bool(
-        env.str("NEO4J_HOST", default="") and env.str("NEO4J_PORT", default="")
-    )
+    return bool(env.str("NEO4J_HOST", default="") and env.str("NEO4J_PORT", default=""))
 
 
 def post_fork(_server, worker):
@@ -105,9 +103,8 @@ def post_fork(_server, worker):
     worker. Re-initializing per worker guarantees each child owns its own
     live threads. See GUNICORN_WORKER_TIMEOUTS_ANALYSIS.md for detail.
 
-    Compliance caches are then warmed in a background thread so the worker
-    becomes ready immediately. A request for a not-yet-warmed provider lazily
-    loads just that provider, which stays well under the worker timeout.
+    Compliance caches may be warmed in a background thread when explicitly
+    enabled. Otherwise, requests lazy-load only their provider's metadata.
     """
     from api.attack_paths import database as graph_database
 
@@ -129,8 +126,11 @@ def post_fork(_server, worker):
             "Attack Paths is unavailable: Neo4j is not configured for this deployment"
         )
 
-    threading.Thread(
-        target=_warm_compliance_caches_in_background,
-        name="warm-compliance-caches",
-        daemon=True,
-    ).start()
+    if env.bool("WARM_COMPLIANCE_CACHES", default=False):
+        threading.Thread(
+            target=_warm_compliance_caches_in_background,
+            name="warm-compliance-caches",
+            daemon=True,
+        ).start()
+    else:
+        gunicorn_logger.info("Compliance cache warm-up disabled; using lazy loading")
