@@ -143,7 +143,7 @@ drf-nested-routers==0.95.0
 drf-simple-apikey==2.2.1
 drf-spectacular-jsonapi==0.5.1
 drf-spectacular==0.27.2
-dulwich==0.23.0
+dulwich==1.2.5
 duo-client==5.6.1
 durationpy==0.10
 email-validator==2.2.0
@@ -325,5 +325,24 @@ zipp==3.23.0
 zope-event==6.1
 zope-interface==8.2
 zstd==1.5.7.3
-prowler @ git+https://github.com/prowler-cloud/prowler.git@f05a490cd74a2c0f11a5d66d8ce29d03fa5c64a2
+prowler==5.41.0
+kingfisher-bin==1.104.0
+linode-api4==5.45.0
+stackit-core==0.2.0
+stackit-iaas==1.4.0
+stackit-objectstorage==1.4.0
+stackit-resourcemanager==0.8.0
+stackit-ske==1.12.0
+truststore==0.10.4
+zstandard==0.25.0
+huaweicloudsdkcore==3.1.204
+huaweicloudsdkcts==3.1.204
+huaweicloudsdkecs==3.1.204
+huaweicloudsdkelb==3.1.204
+huaweicloudsdkevs==3.1.204
+huaweicloudsdkiam==3.1.204
+huaweicloudsdkkms==3.1.204
+huaweicloudsdkobs==3.1.204
+huaweicloudsdkrds==3.1.204
+huaweicloudsdkvpc==3.1.204
 cg-django-uaa==2.1.10

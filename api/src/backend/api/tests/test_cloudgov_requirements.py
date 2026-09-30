@@ -27,10 +27,12 @@ class TestCloudgovBuildpackRequirements:
         requirements_path = Path(__file__).resolve().parents[4] / "requirements.txt"
         requirements = requirements_path.read_text()
 
-        assert (
-            "prowler @ git+https://github.com/prowler-cloud/prowler.git@f05a490cd74a2c0f11a5d66d8ce29d03fa5c64a2"
-            in requirements
-        )
+        assert "prowler==5.41.0" in requirements
+        assert "dulwich==1.2.5" in requirements
+        assert "kingfisher-bin==1.104.0" in requirements
+        assert "linode-api4==5.45.0" in requirements
+        assert "truststore==0.10.4" in requirements
+        assert "zstandard==0.25.0" in requirements
 
     def test_worker_script_uses_cloudgov_safe_celery_defaults(self):
         script_path = Path(__file__).resolve().parents[4] / "bin" / "cloudgov-worker.sh"
