@@ -325,5 +325,5 @@ zipp==3.23.0
 zope-event==6.1
 zope-interface==8.2
 zstd==1.5.7.3
-prowler==5.23.0
+prowler @ git+https://github.com/prowler-cloud/prowler.git@f05a490cd74a2c0f11a5d66d8ce29d03fa5c64a2
 cg-django-uaa==2.1.10
