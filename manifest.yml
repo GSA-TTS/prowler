@@ -95,7 +95,7 @@ applications:
     memory: 512M
     disk_quota: 4G
     instances: 1
-    command: "rm -rf node_modules && mv .node_modules node_modules && node server.js"
+    command: "node server.js"
     routes:
       - route: ((ui_route))
     env:
