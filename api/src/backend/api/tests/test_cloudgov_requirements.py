@@ -60,3 +60,14 @@ class TestCloudgovBuildpackRequirements:
         manifest = manifest_path.read_text()
 
         assert "RUN_DB_MIGRATIONS: 0" in manifest
+
+    def test_web_runtime_skips_optional_attack_paths_without_neo4j(self):
+        config_path = (
+            Path(__file__).resolve().parents[3] / "config" / "guniconf.py"
+        )
+        config = config_path.read_text()
+
+        assert "def _attack_paths_is_configured()" in config
+        assert 'env.str("NEO4J_HOST", default="")' in config
+        assert 'env.str("NEO4J_PORT", default="")' in config
+        assert "if _attack_paths_is_configured():" in config

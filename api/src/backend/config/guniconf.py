@@ -82,6 +82,19 @@ def _warm_compliance_caches_in_background():
         gunicorn_logger.info("Compliance caches warmed")
 
 
+def _attack_paths_is_configured() -> bool:
+    """Return whether this deployment has the mandatory graph database config.
+
+    The Cloud.gov manifest intentionally leaves Neo4j unset when Attack Paths
+    is not offered. Both supported sink modes still require Neo4j for
+    Cartography's temporary scan databases, so avoid initializing either
+    driver unless the required host and port are present.
+    """
+    return bool(
+        env.str("NEO4J_HOST", default="") and env.str("NEO4J_PORT", default="")
+    )
+
+
 def post_fork(_server, worker):
     """Re-initialize attack-paths drivers and warm compliance caches per worker.
 
@@ -106,8 +119,15 @@ def post_fork(_server, worker):
             worker.pid,
             exc_info=True,
         )
-    graph_database.init_driver()
-    gunicorn_logger.info(f"Attack-paths drivers initialized for worker {worker.pid}")
+    if _attack_paths_is_configured():
+        graph_database.init_driver()
+        gunicorn_logger.info(
+            f"Attack-paths drivers initialized for worker {worker.pid}"
+        )
+    else:
+        gunicorn_logger.info(
+            "Attack Paths is unavailable: Neo4j is not configured for this deployment"
+        )
 
     threading.Thread(
         target=_warm_compliance_caches_in_background,
