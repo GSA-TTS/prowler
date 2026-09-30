@@ -14,6 +14,12 @@ class TestCloudgovBuildpackRequirements:
 
         assert "uvicorn-worker==0.4.0" in requirements
 
+    def test_web_runtime_includes_django_eventstream(self):
+        requirements_path = Path(__file__).resolve().parents[4] / "requirements.txt"
+        requirements = requirements_path.read_text().splitlines()
+
+        assert "django-eventstream==5.3.3" in requirements
+
     def test_worker_script_uses_cloudgov_safe_celery_defaults(self):
         script_path = Path(__file__).resolve().parents[4] / "bin" / "cloudgov-worker.sh"
         script = script_path.read_text()

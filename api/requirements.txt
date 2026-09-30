@@ -128,6 +128,7 @@ django-cors-headers==4.4.0
 django-environ==0.11.2
 django-filter==24.3
 django-guid==3.5.0
+django-eventstream==5.3.3
 django-postgres-extra==2.0.9
 django-timezone-field==7.2.1
 django==5.1.15

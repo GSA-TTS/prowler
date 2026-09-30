@@ -23,13 +23,16 @@ export async function GET(req: Request) {
   const serverApiBaseUrl = process.env.API_BASE_URL || apiBaseUrl;
 
   try {
-    const response = await fetch(`${serverApiBaseUrl}/tokens/saml?id=${id}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/vnd.api+json",
-        Accept: "application/vnd.api+json",
+    const response = await fetch(
+      `${serverApiBaseUrl}/tokens/saml?id=${encodeURIComponent(id)}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/vnd.api+json",
+          Accept: "application/vnd.api+json",
+        },
       },
-    });
+    );
 
     if (!response.ok) {
       throw new Error(`Failed to fetch tokens: ${response.statusText}`);

@@ -1,10 +1,9 @@
-from django.conf import settings
-from django.db import transaction
-from uaa_client.authentication import UaaBackend
-
 from api.account_bootstrap import provision_default_tenant_access
 from api.db_router import MainRouter
 from api.models import User
+from django.conf import settings
+from django.db import transaction
+from uaa_client.authentication import UaaBackend
 
 ALLOWED_PROVISIONING_ROLES = frozenset({"admin", "editor", "read"})
 
@@ -63,6 +62,9 @@ class ProwlerUaaBackend(UaaBackend):
     @classmethod
     def get_user_by_email(cls, email):
         normalized_email = email.strip().lower()
+        if not cls.should_create_user_for_email(normalized_email):
+            return None
+
         try:
             return User.objects.using(MainRouter.admin_db).get(
                 email__iexact=normalized_email

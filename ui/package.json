@@ -17,6 +17,7 @@
     "lint:fix": "eslint . --fix --max-warnings 40",
     "lint:knip": "knip --max-issues 494",
     "lint:knip:fix": "knip --fix --max-issues 494",
+    "prepare:cloudgov": "bash scripts/prepare-cloudgov-standalone.sh",
     "start": "next start",
     "start:standalone": "node .next/standalone/server.js",
     "test": "vitest run",

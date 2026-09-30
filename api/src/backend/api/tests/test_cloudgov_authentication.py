@@ -1,9 +1,8 @@
 from unittest.mock import patch
 
 import pytest
-from django.test import override_settings
-
 from api.cloudgov.authentication import ProwlerUaaBackend
+from django.test import override_settings
 
 
 @pytest.mark.django_db
@@ -15,13 +14,22 @@ class TestProwlerUaaBackend:
         }
     )
     def test_get_role_name_for_email_uses_configured_mapping(self):
-        assert ProwlerUaaBackend.get_role_name_for_email("EDITOR@example.com") == "editor"
+        assert (
+            ProwlerUaaBackend.get_role_name_for_email("EDITOR@example.com") == "editor"
+        )
         assert ProwlerUaaBackend.get_role_name_for_email("reader@example.com") == "read"
 
     @override_settings(UAA_EMAIL_ROLE_MAP={"read": ["reader@example.com"]})
     def test_get_role_name_for_unmapped_email_denies_provisioning(self):
         assert ProwlerUaaBackend.get_role_name_for_email("other@example.com") is None
         assert not ProwlerUaaBackend.should_create_user_for_email("other@example.com")
+
+    @override_settings(UAA_EMAIL_ROLE_MAP={"read": ["reader@example.com"]})
+    def test_get_user_by_email_denies_unmapped_existing_user(self):
+        with patch("api.cloudgov.authentication.User.objects") as mock_users:
+            assert ProwlerUaaBackend.get_user_by_email("other@example.com") is None
+
+        mock_users.using.assert_not_called()
 
     @override_settings(UAA_EMAIL_ROLE_MAP={"admin": "admin@example.com"})
     def test_get_role_name_rejects_non_list_role_configuration(self):
@@ -55,9 +63,7 @@ class TestProwlerUaaBackend:
 
     @override_settings(UAA_EMAIL_ROLE_MAP={"read": ["ab@example.com"]})
     def test_create_user_with_short_local_part_uses_valid_name(self):
-        with patch(
-            "api.cloudgov.authentication.provision_default_tenant_access"
-        ):
+        with patch("api.cloudgov.authentication.provision_default_tenant_access"):
             user = ProwlerUaaBackend.create_user_with_email("ab@example.com")
 
         assert user.name == "ab user"

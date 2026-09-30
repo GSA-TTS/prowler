@@ -105,7 +105,9 @@ applications:
       NPM_CONFIG_IGNORE_SCRIPTS: "true"
       NEXT_PUBLIC_API_BASE_URL: https://((api_route))/api/v1
       NEXT_PUBLIC_API_DOCS_URL: https://((api_route))/api/v1/docs
-      API_BASE_URL: http://prowler-api-gsa-tts-iae-lava-beds-dev.apps.internal:8080/api/v1
+      # This one-time authorization-code bridge must not traverse plaintext HTTP.
+      # The browser-facing API route is TLS-terminated by Cloud.gov.
+      API_BASE_URL: https://((api_route))/api/v1
       AUTH_URL: https://((ui_route))
       AUTH_SECRET: ((ui_auth_secret))
       NEXT_PUBLIC_CLOUDGOV_SSO_URL: https://((api_route))/auth/login
